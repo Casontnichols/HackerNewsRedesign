@@ -1,3 +1,4 @@
+import type { Filter } from "~/types/article-filter-types";
 import { ArticleFilter } from "../common/article-filter";
 import { ModeToggle } from "../mode-toggle";
 import { useTheme } from "../theme-provider";
@@ -6,7 +7,7 @@ export function Navbar({
   filter,
   setFilter,
 }: {
-  filter: "latest" | "starred";
+  filter: Filter;
   setFilter: (value: "latest" | "starred") => void;
 }) {
   const { theme } = useTheme();

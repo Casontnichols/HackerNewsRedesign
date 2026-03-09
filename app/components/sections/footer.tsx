@@ -1,10 +1,11 @@
+import type { Filter } from "~/types/article-filter-types";
 import { ArticleFilter } from "../common/article-filter";
 
 export function Footer({
   filter,
   setFilter,
 }: {
-  filter: "latest" | "starred";
+  filter: Filter;
   setFilter: (value: "latest" | "starred") => void;
 }) {
   return (

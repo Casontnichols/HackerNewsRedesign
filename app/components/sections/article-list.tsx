@@ -1,6 +1,7 @@
 import type { HackerNewsStory } from "~/types/hackernews-types";
 import { Button } from "../ui/button";
 import { Star } from "lucide-react";
+import { useState } from "react";
 
 type ArticleListProps = {
   stories: HackerNewsStory[];
@@ -13,6 +14,26 @@ export function ArticleList({
   starredStories,
   onToggleStar,
 }: ArticleListProps) {
+
+  // Tracking the state of the stories the user has clicked on and visited.
+  const [visitedStories, setvisitedStories] = useState<number[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("visitedStories");
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
+
+  // Pushing the id of the story that the user visits to their local storage.
+  const handleStoryClick = (id: number) => {
+    setvisitedStories((prev) => {
+      if (prev.includes(id)) return prev;
+      const updated = [...prev, id];
+      localStorage.setItem("visitedStories", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   return (
     <ol className="list-decimal space-y-4 pl-30 pt-10 font-sans text-muted-foreground">
       {stories.map((story) => {
@@ -21,7 +42,12 @@ export function ArticleList({
         return (
           <li key={story.id}>
             <div className="flex gap-1 text-lg">
-              <a href={story.url} target="_blank" className="text-foreground">
+              <a
+                href={story.url}
+                target="_blank"
+                className={`text-foreground ${visitedStories.includes(story.id) ? "opacity-60" : ""}`}
+                onClick={() => handleStoryClick(story.id)}
+              >
                 {story.title}
               </a>
               {story.url && (

@@ -3,6 +3,7 @@ import {
   type HackerNewsStory,
 } from "~/types/hackernews-types";
 
+/* Function returns the top 500 ids from the hacker news api. */
 export async function getTopStoryIds(): Promise<number[]> {
   const response = await fetch(
     "https://hacker-news.firebaseio.com/v0/topstories.json",
@@ -11,6 +12,11 @@ export async function getTopStoryIds(): Promise<number[]> {
   return response.json();
 }
 
+/* 
+Function returns a list of full story schemas from the hacker news api using the ids
+from the previous function. 
+Zod is used to validate the schema coming from the api at run time.
+ */
 export async function getStories(ids: number[]): Promise<HackerNewsStory[]> {
   const storyResponses = ids.map(async (id) => {
     const response = await fetch(

@@ -30,10 +30,16 @@ export default function Index({ loaderData }: Route.ComponentProps) {
 
   const [visibleStories, setVisibleStories] = useState(12);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const [showButton, setShowButton] = useState(true);
 
   const loadMoreStories = () => {
     setVisibleStories((vis) => vis + 12);
   };
+
+  const handleLoadMoreButton = () => {
+    loadMoreStories();
+    setShowButton(false);
+  }
 
   const [filter, setFilter] = useState<Filter>("latest");
 
@@ -96,7 +102,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         starredStories={starred}
         onToggleStar={toggleStarred}
       />
-      {filter === "latest" && <ArticleButton loadMore={loadMoreStories} />}
+      {filter === "latest" && showButton && visibleStories < filteredStories.length && <ArticleButton loadMore={handleLoadMoreButton} />}
       <div ref={loadMoreRef} className="h-10" />
       <Footer filter={filter} setFilter={setFilter} />
     </main>
