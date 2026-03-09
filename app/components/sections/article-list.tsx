@@ -9,13 +9,20 @@ type ArticleListProps = {
   onToggleStar: (id: number) => void;
 };
 
+/* 
+This component could be broken out better. Instead of using .map() to map the items to individual list items,
+this would promote scalability and maintainability. This would be much better to maintain in the long run.
+*/
 export function ArticleList({
   stories,
   starredStories,
   onToggleStar,
 }: ArticleListProps) {
 
-  // Tracking the state of the stories the user has clicked on and visited.
+  /* 
+  Tracking the state of the stories the user has clicked on and visited. Initialized from the user's
+  localStorage to persist between page loads.
+  */
   const [visitedStories, setvisitedStories] = useState<number[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("visitedStories");
@@ -24,7 +31,7 @@ export function ArticleList({
     return [];
   });
 
-  // Pushing the id of the story that the user visits to their local storage.
+  // Handles when a story is clicked. Adds the id of the story that the user visits to localStorage.
   const handleStoryClick = (id: number) => {
     setvisitedStories((prev) => {
       if (prev.includes(id)) return prev;
@@ -37,7 +44,7 @@ export function ArticleList({
   return (
     <ol className="list-decimal space-y-4 pl-30 pt-10 font-sans text-muted-foreground">
       {stories.map((story) => {
-        const isStarred = starredStories.includes(story.id);
+        const isStarred = starredStories.includes(story.id); // Check if story is starred.
 
         return (
           <li key={story.id}>
