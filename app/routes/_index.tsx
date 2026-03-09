@@ -22,10 +22,7 @@ export async function loader({}: Route.LoaderArgs) {
 
   const stories = await getStories(ids);
 
-  return {
-    ids,
-    stories,
-  };
+  return { stories };
 }
 
 export default function Index({ loaderData }: Route.ComponentProps) {
